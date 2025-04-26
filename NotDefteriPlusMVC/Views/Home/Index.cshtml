@@ -1,0 +1,51 @@
+﻿@model IEnumerable<NotDefteriPlusMVC.ViewModels.Notlar.NotListeleVM>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Hoşgeldin Ziyaretçi</h1>
+    <h4>Not Listesi</h4>
+    <a asp-action="Listele" asp-controller="Not" class="btn btn-success mt-2">Benim Notlarım</a> <br /> <br />
+    <table class="table table-bordered table-striped text-center align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Baslik)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Ders)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KullaniciAd)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <input type="hidden" asp-for="@item.NotId" />
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Baslik)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ders)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.KullaniciAd)
+                    </td>
+                    <td>
+                        <a asp-route-id="@item.NotId" asp-action="Detay" asp-controller="Not" class="btn btn-success mt-2">Detay</a> <br />
+                        @if (User != null && ViewBag.UserId == item.KullaniciId)
+                        {
+                            <a asp-route-id="@item.NotId" asp-action="Guncelle" asp-controller="Not" class="btn btn-secondary mt-2">Güncelle</a> <br />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

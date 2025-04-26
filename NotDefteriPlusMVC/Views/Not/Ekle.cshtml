@@ -1,0 +1,52 @@
+﻿@model NotDefteriPlusMVC.ViewModels.Notlar.NotEkleFormVM
+
+@{
+    ViewData["Title"] = "Ekle";
+}
+
+<h1>Not Ekle</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Ekle" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Not.Baslik" class="control-label"></label>
+                <input asp-for="Not.Baslik" class="form-control" />
+                <span asp-validation-for="Not.Baslik" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not.Icerik" class="control-label"></label>
+                <textarea asp-for="Not.Icerik" class="form-control"></textarea>
+                <span asp-validation-for="Not.Icerik" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not.BolumId" class="control-label"></label>
+                <select asp-for="Not.BolumId" asp-items="Model.Bolumler" class="form-control"></select>
+                <span asp-validation-for="Not.BolumId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not.DersId" class="control-label"></label>
+                <select asp-for="Not.DersId" asp-items="Model.Dersler" class="form-control"></select>
+                <span asp-validation-for="Not.DersId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Not.Dosya" class="control-label"></label>
+                <input type="file" asp-for="Not.Dosya" class="form-control" />
+                <span asp-validation-for="Not.Dosya" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-primary mt-2" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Listele" class="btn btn-secondary mt-2">Listeyi gör</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

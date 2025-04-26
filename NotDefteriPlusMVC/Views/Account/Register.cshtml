@@ -1,0 +1,62 @@
+﻿@model NotDefteriPlusMVC.ViewModels.Accounts.RegisterFormVM
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<h1>Kayıt Ol</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Register">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Kullanici.Ad" class="control-label"></label>
+                <input asp-for="Kullanici.Ad" class="form-control" />
+                <span asp-validation-for="Kullanici.Ad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kullanici.Soyad" class="control-label"></label>
+                <input asp-for="Kullanici.Soyad" class="form-control" />
+                <span asp-validation-for="Kullanici.Soyad" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kullanici.SecilenBolumler" class="control-label"></label>
+                <select asp-for="Kullanici.SecilenBolumler" asp-items="Model.Bolumler" class="form-control" multiple></select>
+                <span asp-validation-for="Kullanici.SecilenBolumler" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kullanici.Email" class="control-label"></label>
+                <input asp-for="Kullanici.Email" class="form-control" />
+                <span asp-validation-for="Kullanici.Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kullanici.KullaniciAdi" class="control-label"></label>
+                <input asp-for="Kullanici.KullaniciAdi" class="form-control" />
+                <span asp-validation-for="Kullanici.KullaniciAdi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kullanici.Sifre" class="control-label"></label>
+                <input type="password" asp-for="Kullanici.Sifre" class="form-control" />
+                <span asp-validation-for="Kullanici.Sifre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Kullanici.SifreTekrari" class="control-label"></label>
+                <input type="password" asp-for="Kullanici.SifreTekrari" class="form-control" />
+                <span asp-validation-for="Kullanici.SifreTekrari" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Kayıt Ol" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Login">Üyeyim</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

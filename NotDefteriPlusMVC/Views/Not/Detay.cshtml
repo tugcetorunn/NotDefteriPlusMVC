@@ -1,0 +1,90 @@
+﻿@model NotDefteriPlusMVC.ViewModels.Notlar.NotDetayVM
+
+@{
+    ViewData["Title"] = "Detay";
+}
+
+<h1>Detay</h1>
+
+<div>
+    <dl class="row">
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NotId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NotId)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Baslik)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Baslik)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DosyaYolu)
+        </dt>
+        <dd class="col-sm-10">
+            <img src="~/images/@Model.DosyaYolu" style="height: 150px; width: 200px" />
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Fakulte)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Fakulte)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Bolum)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Bolum)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ders)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ders)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Icerik)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Icerik)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.OlusturulmaTarihi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.OlusturulmaTarihiStr)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GuncellenmeTarihi)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GuncellenmeTarihiStr)
+        </dd>
+        <hr />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.KullaniciAd)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.KullaniciAd)
+        </dd>
+    </dl>
+</div>
+<div>
+    @if (User != null && ViewBag.UserId == Model.KullaniciId) @* oturumdaki kullanıcı bu notu ekleyen kullanıcı mı sorusuna cevap verir, öyleyse güncelle butonunu getirir. her kullanıcı sadece 
+        kendi notunu güncelleyebilir kısıtını sağlamış oluruz. *@
+    {
+        <a asp-action="Guncelle" asp-route-id="@Model.NotId" class="btn btn-primary">Güncelle</a>
+    }
+    <a asp-action="Index" asp-controller="Home" class="btn btn-primary">Listeyi gör</a>
+</div>
