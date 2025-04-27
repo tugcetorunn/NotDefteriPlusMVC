@@ -24,6 +24,8 @@ namespace NotDefteriPlusMVC.ViewModels.Accounts
         [StringLength(30, ErrorMessage = "Kullanıcı adı en fazla 30 karakter olmalıdır")]
         [Display(Name = "Kullanıcı Adı")]
         public string KullaniciAdi { get; set; }
+
+        [Display(Name = "Bölümler")]
         public List<int> SecilenBolumler { get; set; }
 
         [Required(ErrorMessage = "Şifre boş olamaz")]

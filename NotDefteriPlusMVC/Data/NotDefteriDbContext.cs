@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace NotDefteriPlusMVC.Data
 {
+    /// <summary>
+    /// Veritabanı bağlamını temsil eden sınıf
+    /// </summary>
     public class NotDefteriDbContext : IdentityDbContext<Kullanici>
     {
         public NotDefteriDbContext()

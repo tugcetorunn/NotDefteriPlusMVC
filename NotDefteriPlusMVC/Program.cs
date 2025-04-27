@@ -47,6 +47,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+// authorize ve authenticate middleware lerinin eklenmesi
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

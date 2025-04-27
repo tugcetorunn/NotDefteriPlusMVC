@@ -8,17 +8,11 @@ namespace NotDefteriPlusMVC.Abstracts.Repositories
     /// </summary>
     public interface IBolumRepository : IRepository<Bolum>
     {
-        ///// <summary>
-        ///// Kullanıcıya ait bölümleri listele
-        ///// </summary>
-        ///// <param name="kullaniciId"></param>
-        ///// <returns></returns>
-        //List<KullaniciBolumVM> BolumleriGetir(string kullaniciId);
-        ///// <summary>
-        ///// Bölümün derslerini getir
-        ///// </summary>
-        ///// <param name="bolumId"></param>
-        ///// <returns></returns>
-        //List<BolumDersVM> BolumDersleriniGetir(int bolumId);
+        /// <summary>
+        /// Bölümün derslerini getir
+        /// </summary>
+        /// <param name="bolumId"></param>
+        /// <returns></returns>
+        IEnumerable<BolumDersVM> BolumDersleriniGetir(IEnumerable<KullaniciBolumVM> bolumler);
     }
 }

@@ -5,7 +5,15 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Hoşgeldin Ziyaretçi</h1>
+    @if(User.Identity.Name != null)
+    {
+        <h1 class="display-4">Hoşgeldin @User.Identity.Name</h1>
+    }
+    else
+    {
+        <h1 class="display-4">Hoşgeldin Ziyaretçi</h1>
+    }
+    
     <h4>Not Listesi</h4>
     <a asp-action="Listele" asp-controller="Not" class="btn btn-success mt-2">Benim Notlarım</a> <br /> <br />
     <table class="table table-bordered table-striped text-center align-middle">

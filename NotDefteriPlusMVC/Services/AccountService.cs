@@ -9,6 +9,7 @@ using NotDefteriPlusMVC.ResultViewModels;
 using NotDefteriPlusMVC.ViewModels.Accounts;
 using NotDefteriPlusMVC.ViewModels.Notlar;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace NotDefteriPlusMVC.Services
 {
@@ -27,13 +28,13 @@ namespace NotDefteriPlusMVC.Services
             context = _context;
         }
 
-        public LoginResult Login(LoginVM vm)
+        public async Task<LoginResult> Login(LoginVM vm)
         {
             LoginResult loginResult = new(); // üyeyi, sonucu ve mesajı döndürecek result class
-            var user = userManager.FindByNameAsync(vm.KullaniciAdi).Result;
+            var user = await userManager.FindByNameAsync(vm.KullaniciAdi);
             if (user != null)
             {
-                var result = userManager.CheckPasswordAsync(user, vm.Sifre).Result;
+                var result = await userManager.CheckPasswordAsync(user, vm.Sifre);
                 if (result)
                 {
                     // signin metodunu controller da çalıştıracağız.
@@ -81,14 +82,14 @@ namespace NotDefteriPlusMVC.Services
             return userId;
         }
 
-        public IEnumerable<KullaniciBolumVM> KullaniciBolumleriniGetir(ClaimsPrincipal claims)
+        public async Task<IEnumerable<KullaniciBolumVM>> KullaniciBolumleriniGetir(ClaimsPrincipal claims)
         {
             var userId = userManager.GetUserId(claims);
 
-            var kullanici = context.Users // usermanager da loading yapılmıyor...
+            var kullanici = await context.Users // usermanager da loading yapılmıyor...
                 .Include(u => u.Bolumler)
                     .ThenInclude(ub => ub.Bolum)
-                .FirstOrDefault(u => u.Id == userId);
+                .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (kullanici == null || kullanici.Bolumler == null)
                 return Enumerable.Empty<KullaniciBolumVM>();
@@ -106,11 +107,11 @@ namespace NotDefteriPlusMVC.Services
         }
 
 
-        public RegisterFormVM RegisterFormOlustur()
+        public async Task<RegisterFormVM> RegisterFormOlustur()
         {
             RegisterFormVM form = new()
             {
-                Bolumler = new SelectList(bolumRepository.Listele(), "BolumId", "BolumAdi")
+                Bolumler = new SelectList(await bolumRepository.ListeleAsync(), "BolumId", "BolumAdi")
             };
 
             return form;

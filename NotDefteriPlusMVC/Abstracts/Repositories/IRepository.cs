@@ -6,10 +6,11 @@
     /// <typeparam name="TEntity"></typeparam>
     public interface IRepository<TEntity> where TEntity : class
     {
-        void Ekle(TEntity entity);
-        void Guncelle(TEntity entity);
-        void Sil(int id);
-        TEntity Bul(int id);
-        List<TEntity> Listele();
+        Task EkleAsync(TEntity entity);
+        Task GuncelleAsync(TEntity entity);
+        Task SilAsync(int id);
+        Task<TEntity> BulAsync(int id);
+        Task<List<TEntity>> ListeleAsync();
+        Task<bool> DegisiklikleriKaydetAsync();
     }
 }

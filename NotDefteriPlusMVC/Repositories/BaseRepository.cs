@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NotDefteriPlusMVC.Abstracts.Repositories;
 using NotDefteriPlusMVC.Data;
+using System.Threading.Tasks;
 
 namespace NotDefteriPlusMVC.Repositories
 {
     /// <summary>
-    /// tüm ortak metodları tek bir yerden yazıp tüm entity ler için kullanabileceğimiz generic repository sınıfı
+    /// Tüm ortak metodları tek bir yerden yazıp tüm entity ler için kullanabileceğimiz generic repository sınıfı
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : class
@@ -17,32 +18,37 @@ namespace NotDefteriPlusMVC.Repositories
             context = _context;
             table = context.Set<TEntity>();
         }
-        public void Ekle(TEntity entity)
+        public async Task EkleAsync(TEntity entity)
         {
-            table.Add(entity);
-            context.SaveChanges();
+            table.AddAsync(entity);
+            await DegisiklikleriKaydetAsync();
         }
-        public void Guncelle(TEntity entity)
+        public async Task GuncelleAsync(TEntity entity)
         {
             table.Update(entity);
-            context.SaveChanges();
+            await DegisiklikleriKaydetAsync();
         }
-        public void Sil(int id)
+        public async Task SilAsync(int id)
         {
-            var entity = Bul(id);
+            var entity = await BulAsync(id);
             if (entity != null)
             {
                 table.Remove(entity);
-                context.SaveChanges();
+                await DegisiklikleriKaydetAsync();
             }
         }
-        public TEntity Bul(int id)
+        public async Task<TEntity> BulAsync(int id)
         {
-            return table.Find(id);
+            return await table.FindAsync(id);
         }
-        public List<TEntity> Listele()
+        public async Task<List<TEntity>> ListeleAsync()
         {
-            return table.ToList();
+            return await table.ToListAsync();
+        }
+
+        public async Task<bool> DegisiklikleriKaydetAsync()
+        {
+            return await context.SaveChangesAsync() < 1 ? false : true; // kaydetme başarılıysa 1 değilse 0 döner.
         }
     }
 }

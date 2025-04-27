@@ -1,0 +1,31 @@
+MVC YAŞANAN HATALARA YÖNELİK NOTLAR
+--- Login işleminde username, passwordd check yaptıktan sonra SigninAsync metodunu çalıştırmayı unutma. 
+Çalıştırılmazsa sen giriş yaptığını sanırsın ama bir actiona [Authorize] eklediğinde hata verir. çünkü
+user actionlara gelmez.
+
+--- EklemeVM e üyeId eklemeye gerek yok, ayrıca doğru ve güvenilir değil. Id zaten actiona User property si 
+ile gelir. Güvenli olmamasının sebebi kullanıcı html üzerinden başka bir id gönderirse veri yanlış usera 
+kaydedilebilir.
+
+--- Örneğin kitaplar tablosuna veri ekledik. Many to many ilişkisinde olduğu list<kitapkategori> tipindeki
+kategoriler property sine de veri eklenmişse kitapkategori tablosuna da veri eklenir. kitapkategori ye ekleme 
+yapıp kitap a yapmadıysak yine kitap da eklenmiş olur (not null propeerty ler tanımlanmışsa). yani ikisinden 
+birine ekleme ve save yapmamız yeterli. fakat ikisine de ekleme yapmaya çalışırsak hata alırız. valid hatası 
+gibi ekranda görünen şu hata çıkar -> System.ArgumentNullException: 'Value cannot be null. (Parameter 'source')'.
+ve ayrıca kitapkategori ye kitabı nav prop undan atama yaparsak (kitapid = kitap.kitapid değil kitap = kitap) tek 
+savechanges (repository ya da service varsa ekleme metodu ile) ile işi çözmüş oluruz. 
+
+--- Web adresi için web sayfası bulunamadı: http://localhost:5284/Identity/Account/Login?ReturnUrl=%2FKitap%2FListele
+Bu hatayı aldıysan authorize işleminde, kullanıcının null gelmesinden dolayı olabilir. identity user ı yönlendirilen
+yerde bulamazsa kendi default Identity login yolundan aramaya çalışır. tabi controller vs böyle tanımlamadıysan 
+şaşırabilirsin. giriş işlemlerini kontrol et. (kullanıcı gerçekten var mı, signin metodu çalıştı mı, bu yüzden
+identity result lar önemli olabilir.) -> varsayılan yolu değiştirmek istiyorsanprogram.cs de addidentity den önce;
+-> builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Auth/Login"; // kendi login sayfan
+    options.AccessDeniedPath = "/Auth/Yetkisiz"; // varsa
+}); -> fakat adddefaultidentity kullandıysan çalışmaz. addidentity çalıştırılmış olması gerekir.
+
+--- ilişkili tablo gelmiyorsa çağırırken include ile vs. joinlenmemiş olabilir. 
+--- html tag lerde kullanılan novalidate keywordü anlaşılamayan validasyon hatalarında neden kaynaklandığını 
+anlamak için debug ın validasyona takılmadan actiona düşmesini, hatayı görmemizi sağlaması için kullanılabilir.

@@ -6,14 +6,14 @@ using System.Security.Claims;
 namespace NotDefteriPlusMVC.Abstracts.Services
 {
     /// <summary>
-    /// accountService i soyutlamak üzere yazılan interface
+    /// AccountService i soyutlamak üzere yazılan interface
     /// </summary>
     public interface IAccountService
     {
-        LoginResult Login(LoginVM vm);
+        Task<LoginResult> Login(LoginVM vm);
         Task<bool> Register(RegisterVM vm);
         string UserIdGetir(ClaimsPrincipal uye); // controllerlarda user id gereken noktalarda kullanılmak üzere yazılan metod
-        IEnumerable<KullaniciBolumVM> KullaniciBolumleriniGetir(ClaimsPrincipal claims); // kullanıcıya ait bölümleri getiren metod
-        RegisterFormVM RegisterFormOlustur();
+        Task<IEnumerable<KullaniciBolumVM>> KullaniciBolumleriniGetir(ClaimsPrincipal claims); // kullanıcıya ait bölümleri getiren metod
+        Task<RegisterFormVM> RegisterFormOlustur();
     }
 }
