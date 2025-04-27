@@ -24,7 +24,7 @@ namespace NotDefteriPlusMVC.Controllers
         /// <summary>
         /// Girişi başarılı olan kullanıcının kendi notlarını görmek istediğinde tetiklenecek action.
         /// </summary>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         [Authorize]
         public async Task<IActionResult> Listele()
         {
@@ -37,7 +37,7 @@ namespace NotDefteriPlusMVC.Controllers
         /// Hem ziyaretçilerin hem kullanıcıların not detayını görmek istediğinde tetiklenecek action. Bu yüzden authorize attribute ü kullanılmadı.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         public async Task<IActionResult> Detay(int id)
         {
             ViewBag.UserId = accountService.UserIdGetir(User);
@@ -48,18 +48,18 @@ namespace NotDefteriPlusMVC.Controllers
         /// <summary>
         /// Girişi başarılı olan kullanıcının not eklemek istediğinde tetiklenecek action. Formu açar.
         /// </summary>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         [Authorize]
-        public IActionResult Ekle()
+        public async Task<IActionResult> EkleAsync()
         {
-            return View(notRepository.EklemeFormuOlustur(accountService.UserIdGetir(User), accountService.KullaniciBolumleriniGetir(User)));
+            return View(notRepository.EklemeFormuOlustur(accountService.UserIdGetir(User), await accountService.KullaniciBolumleriniGetir(User)));
         }
 
         /// <summary>
         /// Girişi başarılı olan kullanıcının not eklemek istediğinde tetiklenecek action. Formdan verileri çeker.
         /// </summary>
         /// <param name="not"></param>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Ekle(NotEkleVM not)
@@ -70,7 +70,7 @@ namespace NotDefteriPlusMVC.Controllers
                 return RedirectToAction("Listele");
             }
 
-            var form = notRepository.EklemeFormuOlustur(accountService.UserIdGetir(User), accountService.KullaniciBolumleriniGetir(User));
+            var form = notRepository.EklemeFormuOlustur(accountService.UserIdGetir(User), await accountService.KullaniciBolumleriniGetir(User));
             form.Not = not;
             return View(form);
         }
@@ -79,7 +79,7 @@ namespace NotDefteriPlusMVC.Controllers
         /// Girişi başarılı olan kullanıcının kendi notunu silmek istediğinde tetiklenecek action.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Sil(int id)
@@ -92,11 +92,11 @@ namespace NotDefteriPlusMVC.Controllers
         /// Girişi başarılı olan kullanıcının kendi notunu güncellemek istediğinde tetiklenecek action. Formu açar.
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         [Authorize]
         public async Task<IActionResult> Guncelle(int id)
         {
-            var form = await notRepository.GuncellemeFormuOlustur(id, accountService.UserIdGetir(User), accountService.KullaniciBolumleriniGetir(User));
+            var form = await notRepository.GuncellemeFormuOlustur(id, accountService.UserIdGetir(User), await accountService.KullaniciBolumleriniGetir(User));
             if (form != null)
                 return View(form);
             else
@@ -107,13 +107,13 @@ namespace NotDefteriPlusMVC.Controllers
         /// Girişi başarılı olan kullanıcının kendi notunu güncellemek istediğinde tetiklenecek action. Formdan verileri çeker.
         /// </summary>
         /// <param name="not"></param>
-        /// <returns>IActionResult</returns>
+        /// <returns>Task<IActionResult></returns>
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> Guncelle(NotGuncelleVM not)
         {
             var userId = accountService.UserIdGetir(User);
-            var form = await notRepository.GuncellemeFormuOlustur(not.NotId, userId, accountService.KullaniciBolumleriniGetir(User)); // güncellerken de notu ekleyen kişi ile oturumu açan aynı mı kontrolü yapılıyor çünkü kötü niyetli bir kullanıcı başka bir notun id sini yazıp güncelleme yapabilir.
+            var form = await notRepository.GuncellemeFormuOlustur(not.NotId, userId, await accountService.KullaniciBolumleriniGetir(User)); // güncellerken de notu ekleyen kişi ile oturumu açan aynı mı kontrolü yapılıyor çünkü kötü niyetli bir kullanıcı başka bir notun id sini yazıp güncelleme yapabilir.
             if (form == null)
             {
                 return Forbid(); // yetkisiz kişiye yasak döner

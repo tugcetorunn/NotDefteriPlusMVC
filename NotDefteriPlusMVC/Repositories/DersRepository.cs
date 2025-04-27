@@ -13,15 +13,5 @@ namespace NotDefteriPlusMVC.Repositories
         public DersRepository(NotDefteriDbContext context) : base(context)
         {
         }
-
-        public IEnumerable<BolumDersVM> BolumeGoreDersleriGetir(int bolumId)
-        {
-            var dersler = table.Select(x => new BolumDersVM
-            {
-                DersAdi = x.DersAdi,
-                DersId = x.DersId
-            });
-            return dersler;
-        }
     }
 }

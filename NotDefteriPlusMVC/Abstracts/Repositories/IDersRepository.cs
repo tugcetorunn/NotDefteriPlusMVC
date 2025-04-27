@@ -8,6 +8,5 @@ namespace NotDefteriPlusMVC.Abstracts.Repositories
     /// </summary>
     public interface IDersRepository : IRepository<Ders>
     {
-        IEnumerable<BolumDersVM> BolumeGoreDersleriGetir(int bolumId);
     }
 }

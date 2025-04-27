@@ -9,7 +9,7 @@ namespace NotDefteriPlusMVC.Abstracts.Repositories
     public interface IBolumRepository : IRepository<Bolum>
     {
         /// <summary>
-        /// Bölümün derslerini getir
+        /// Bölümün derslerini getirir. Ekleme ve güncelleme formlarında kullanılır.
         /// </summary>
         /// <param name="bolumId"></param>
         /// <returns></returns>

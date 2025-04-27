@@ -19,16 +19,24 @@ namespace NotDefteriPlusMVC.Controllers
             accountService = _accountService;
         }
 
-
+        /// <summary>
+        /// Giriş yapma sayfasını döner
+        /// </summary>
+        /// <returns>IActionResult</returns>
         public IActionResult Login()
         {
             return View();
         }
 
+        /// <summary>
+        /// Giriş sayfasına girilen bilgileri çeker ve kullanıcıyı kontrol eder. Buna göre giriş işlemi yapar.
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns>Task<IActionResult></returns>
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM vm)
         {
-            var loginResult = accountService.Login(vm);
+            var loginResult = await accountService.Login(vm);
             if (loginResult.Kullanici != null)
             {
                 await signInManager.SignInAsync(loginResult.Kullanici, isPersistent: false);
@@ -41,26 +49,42 @@ namespace NotDefteriPlusMVC.Controllers
             }
         }
 
-        public IActionResult Register()
+        /// <summary>
+        /// Kayıt olma sayfasını döner
+        /// </summary>
+        /// <returns>Task<IActionResult></returns>
+        public async Task<IActionResult> Register()
         {
-            return View(accountService.RegisterFormOlustur());
+            return View(await accountService.RegisterFormOlustur());
         }
 
+        /// <summary>
+        /// Kayıt olma sayfasında girilen bilgileri alır ve bilgileri kontrol eder. Buna göre kayıt işlemi yapar.
+        /// </summary>
+        /// <param name="kullanici"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM kullanici)
         {
             if (ModelState.IsValid)
             {
-                if (await accountService.Register(kullanici))
+                var registerResult = await accountService.Register(kullanici);
+                if (registerResult.Hatalar == null)
                     return RedirectToAction("Login");
                 else
                 {
-                    ModelState.AddModelError("", "Kayıt işlemi başarısız...");
-                    return View(kullanici);
+                    foreach (var item in registerResult.Hatalar)
+                    {
+                        ModelState.AddModelError("", item);
+                    }
+                    RegisterFormVM frm = await accountService.RegisterFormOlustur();
+                    return View(frm);
                 }
-
             }
-            return View(kullanici);
+            // modelstate geçerli değilse
+            // var bolumler = await accountService.KullaniciBolumleriniGetir(User);
+            var form = await accountService.RegisterFormOlustur();
+            return View(form);
         }
 
         public async Task<IActionResult> Logout()

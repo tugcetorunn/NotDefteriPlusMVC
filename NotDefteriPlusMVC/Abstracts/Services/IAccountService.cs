@@ -11,9 +11,9 @@ namespace NotDefteriPlusMVC.Abstracts.Services
     public interface IAccountService
     {
         Task<LoginResult> Login(LoginVM vm);
-        Task<bool> Register(RegisterVM vm);
-        string UserIdGetir(ClaimsPrincipal uye); // controllerlarda user id gereken noktalarda kullanılmak üzere yazılan metod
-        Task<IEnumerable<KullaniciBolumVM>> KullaniciBolumleriniGetir(ClaimsPrincipal claims); // kullanıcıya ait bölümleri getiren metod
+        Task<RegisterResult> Register(RegisterVM vm);
+        string UserIdGetir(ClaimsPrincipal uye);
+        Task<IEnumerable<KullaniciBolumVM>> KullaniciBolumleriniGetir(ClaimsPrincipal claims);
         Task<RegisterFormVM> RegisterFormOlustur();
     }
 }

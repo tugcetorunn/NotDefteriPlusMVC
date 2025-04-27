@@ -28,6 +28,11 @@ namespace NotDefteriPlusMVC.Services
             context = _context;
         }
 
+        /// <summary>
+        /// View den gelen kullanıcı adı ve şifre bilgilerini kontrol eder ve sonucu gönderir. Giriş yapma işlemi controllerda yapılıyor.
+        /// </summary>
+        /// <param name="vm"></param>
+        /// <returns>Task<LoginResult></returns>
         public async Task<LoginResult> Login(LoginVM vm)
         {
             LoginResult loginResult = new(); // üyeyi, sonucu ve mesajı döndürecek result class
@@ -55,7 +60,7 @@ namespace NotDefteriPlusMVC.Services
             return loginResult;
         }
 
-        public async Task<bool> Register(RegisterVM vm) // task bool yerine model gönderelim hataları controllerda gösterelim
+        public async Task<RegisterResult> Register(RegisterVM vm)
         {
             var user = new Kullanici
             {
@@ -73,7 +78,23 @@ namespace NotDefteriPlusMVC.Services
             }
 
             var result = await userManager.CreateAsync(user, vm.Sifre);
-            return result.Succeeded;
+            // kullanıcı oluşturma işlemi başarılı ise
+            if (result.Succeeded)
+            {
+                return new RegisterResult
+                {
+                    Hatalar = null
+                };
+            }
+            else
+            {
+                // hata var, hataları döndür
+                RegisterResult registerResult = new()
+                {
+                    Hatalar = result.Errors.Select(e => e.Description).ToList(),
+                };
+                return registerResult;
+            }
         }
 
         public string UserIdGetir(ClaimsPrincipal uye)
